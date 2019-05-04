@@ -13,8 +13,9 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
 from keras.utils import np_utils
+import time
 
-
+from sklearn.metrics import precision_score, accuracy_score ,recall_score, f1_score
 
 def read_rumor(filename):
     ret = []
@@ -250,107 +251,102 @@ def get_text_features_truth(filename, num):
 
 
 if __name__ == '__main__':
-
-    # 这部分就是训练词向量的
-    # content_rumor = read_rumor("smallrumor.json")
-    # content_truth = read_truth("smalltruth.json")
-    #
-    # print(len(content_rumor))
-    # print(content_rumor)
-    # print(len(content_truth))
-    # print(content_truth)
-    #
-    # data_set = []
-    #
-    # for str in content_rumor:
-    #     # print(word_seg(str))
-    #     data_set.append(word_seg(str))
-    #
-    # for str in content_truth:
-    #     data_set.append(word_seg(str))
-    #
-    # print(len(data_set))
-    # # print(data_set[0])
-    #
-    # word_vectorizer_process(data_set)
-    #
-    # print("词向量训练ok")
-
-
-
-
-
-    # test = "详情：https://weibo.com/5921199319/H0P0iBgh8详情：https://weibo.com/5921199319/H0P0iBgh8"
-    # lists = ['t', 'p']
-    # print(count_words(test, lists))
-
-    # 得到任意一个词的向量
-    # w2v_model = word2vec.Word2Vec.load(r'news_dim32_ep30.model')
-    # print(w2v_model.wv[u'座谈会'])
-
-
+    """
+    训练lstm
+    1，注意文件名,使用不同dataset时，需要更改filename的名字
+    2，数据集文件不可变
+    3，可以通过修改参数word_size提取每个微博词的个数
+    """
+    rumor_filename = "smallrumor.json"
+    truth_filename = "smalltruth.json"
+    word_size = 100 # 取多少个词
+    word_dim = 32   # 词向量维度
+    social_features_dim = 16  # social feature维度
+    nb_epoch = 100    # epoch训练次数
+    batch_size = 40 # 批大小
+    input_dim = word_dim + social_features_dim
 
     # 得到数据集每个微博的social features
-    all_social_features = get_social_features_rumor("smallrumor.json")
-    all_social_features = all_social_features + get_social_features_truth("smalltruth.json")
+    all_social_features = get_social_features_rumor(rumor_filename)
+    num1 = len(all_social_features)
+    all_social_features = all_social_features + get_social_features_truth(truth_filename)
+    num2 = len(all_social_features)-num1
 
-    print(all_social_features)
-    print(len(all_social_features))
-    print("提取social features 完毕")
+    # print(all_social_features)
+    # print(len(all_social_features))
+    print("提取了social features，%d 个rumor %d个truth" % (num1, num2))
 
-    # 得到数据集每微博的text features,只提取前100个词
+    # 得到数据集每微博的text features
+    all_text_features = get_text_features_rumor(rumor_filename, word_size)
+    num1 = len(all_text_features)
+    all_text_features = all_text_features+get_text_features_truth(truth_filename, word_size)
+    num2 = len(all_text_features) - num1
 
-    all_text_features = get_text_features_rumor("smallrumor.json", 100)
-    all_text_features = all_text_features+get_text_features_truth("smalltruth.json", 100)
-    # print(all_text_features)
-    print(len(all_text_features))
+    print("提取了text features，%d 个rumor %d个truth" % (num1, num2))
 
-    print("提取text features 完毕")
-    # 标签是前20个为rumor后20个为truth
-    print("标签准备完毕")
-    y = [1 for i in range(1, 21)]+[0 for i in range(1, 21)]
-    print(y)
-    print(len(y))
-    y = numpy.array(y)
-    y = np_utils.to_categorical(y) # 将数据变成one-hot形式
-    print(y)
-
-    print("准备数据")
-    datax = []
-    for i in range(0, 40): # 对每个微博
+    print("转换为训练数据")
+    data_x = []
+    for i in range(0, num1 + num2):  # 对每个微博
         temp_x = []
         for temp in all_text_features[i]:  # 100个词
             # print(len(temp + all_social_features[i]))
             temp_x.append(numpy.array(temp + all_social_features[i]))
-        datax.append(numpy.array(temp_x))
+        data_x.append(numpy.array(temp_x))
     # print(len(datax))
-    datax = numpy.array(datax)
+    data_x = numpy.array(data_x)
 
-    print("准备训练双向lstm")
-    X = datax.reshape(40, 100, 32+16)
-    print(X.shape)
+    # 准备标签数据
+    print("准备标签数据")
+    lables = [1 for i in range(0, num1)]+[0 for i in range(0, num2)]
+    # print(lables)
+    # print(len(lables))
 
+    y = numpy.array(lables)
+    # 将数据变成one-hot形式
+    y = np_utils.to_categorical(y)
+    # print(y)
+    print("标签数据准备完毕")
+
+    print("构建模型")
+
+    X = data_x.reshape(num1+num2, word_size, input_dim)
+    # print(X.shape)
     model = Sequential()
     model.add(LSTM(32, input_shape=(X.shape[1], X.shape[2]))) # 这种情况下，lstm返回的就只是最后一个时间步的结果
     model.add(Dense(y.shape[1], activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     # 输入的数据 X[一批大小,时间步,输入维度] 25 1 1
-    model.summary()
+    print("模型结构：")
     print(model.summary())
-    model.fit(X, y, nb_epoch=100, batch_size=40, verbose=1) # 训练模型迭代轮次。一个轮次是在整个x或y上的一轮迭代
 
-    print(model.summary())
-    # summarize performance of the model
+    print("开始训练模型...")
+    time_start = time.time()
+    model.fit(X, y, nb_epoch=nb_epoch, batch_size=batch_size, verbose=1)  # 训练模型迭代轮次。一个轮次是在整个x或y上的一轮迭代
+    time_end = time.time()
+    print("完成模型训练。用时：%f s" % (time_end - time_start))
+
+    # 输出模型精度
     scores = model.evaluate(X, y, verbose=0)
     print("Model Accuracy: %.2f%%" % (scores[1]*100))
 
-    for pattern in X:
+    # 重新在数据集上预测，获得更多指标
+    prediction = model.predict(X, verbose=0)  # 重新使用数据集
+    print(prediction)
+    y_pred = []
+    for i in range(0, len(prediction)):
+        index = numpy.argmax(prediction[i])
+        temp = [0, 0]
+        temp[index] = 1
+        y_pred.append(numpy.array(temp))
+    y_pred = numpy.array(y_pred)
+    print(y_pred)
+    print(y)
 
-        x = numpy.reshape(pattern, (1, 100, 32+16))
-        prediction = model.predict(x, verbose=0)
-
-        index = numpy.argmax(prediction)
-        print(index)
+    precision = precision_score(y, y_pred, average='macro')
+    recall = recall_score(y, y_pred, average='macro')
+    accuracy = accuracy_score(y, y_pred)
+    f1 = f1_score(y, y_pred, average='macro')
+    print("precision=%.2f%% recall=%.2f%% accuracy=%.2f%% f1=%.2f%% " % (precision, recall, accuracy, f1))
 
 '''
 if __name__ == '__main__' and sys.argv[1]=='train_word2vector':
