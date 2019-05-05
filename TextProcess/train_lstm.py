@@ -7,45 +7,21 @@ import json
 import sys
 from gensim.models import word2vec
 
-
 import numpy
-from keras.models import Sequential
+import time
+from keras.models import Sequential, load_model
 from keras.layers import Dense
 from keras.layers import LSTM
 from keras.utils import np_utils
-import time
-
+from keras.callbacks import EarlyStopping
 from sklearn.metrics import precision_score, accuracy_score ,recall_score, f1_score
 
-def read_rumor(filename):
-    ret = []
-    with open(filename, 'r', encoding='utf-8') as load_f:
-        for line in load_f.readlines():
-            line = line.strip()
-            if not len(line):
-                continue
-            # print(line)
-            load_dict = json.loads(line)
-            # print(load_dict)
-            # print(load_dict['reportedWeibo']['weiboContent'])
-            ret.append(load_dict['reportedWeibo']['weiboContent'])
-        return ret
-
-
-def read_truth(filename):
-    ret = []
-    with open(filename, 'r', encoding='utf-8') as load_f:
-        for line in load_f.readlines():
-            line = line.strip()
-            if not len(line):
-                continue
-            # print(line)
-            load_dict = json.loads(line)
-            # print(load_dict)
-            # print(load_dict['content'])
-            ret.append(load_dict['content'])
-    return ret
-
+word_size = 100           # 每个微博取多少个词
+word_dim = 32             # 词向量的维度
+social_features_dim = 16  # social feature维度
+nb_epoch = 1000           # epoch训练次数
+batch_size = 40           # 批大小
+input_dim = word_dim + social_features_dim
 
 def word_seg(str):
     ret = []
@@ -66,30 +42,6 @@ def count_words(str, words):
     for word in words:
         ret += str.count(word)
     return ret
-
-
-def word_vectorizer_process(data_set):
-    vector_size = 32   # 词向量大小
-    window_size = 5    # Maximum distance between the current and predicted word within a sentence.
-    min_count = 1      # Ignores all words with total frequency lower than this.
-    negative_size = 5  # 负采样？
-    train_epoch = 30   # 迭代次数
-    worker_count = 30  # Use these many worker threads to train the model
-
-    with open('dataset.txt', 'w', encoding='utf-8') as f:
-        for temp in data_set:
-            for words in temp:
-                f.write(words+'\t')
-
-    sentences = word2vec.Text8Corpus(u'dataset.txt')
-    # print(data_set)
-    model = word2vec.Word2Vec(sentences, size=vector_size, window=window_size, min_count=min_count,
-                              workers=worker_count, negative=negative_size, iter=train_epoch)
-    # print(model.wv[u'座谈会'])
-    # print(model.wv['#'])
-    # model.train([[u"座谈会", u"会议"]], total_examples=1, epochs=1)
-    # print(model.wv[u"座谈会"])
-    model.save(r'news_dim32_ep30.model')
 
 
 def get_social_features_rumor(filename):
@@ -195,7 +147,7 @@ def get_social_features_truth(filename):
     return ret
 
 
-def get_text_features_rumor(filename, num):
+def get_text_features_rumor(filename, num, dim):
     w2v_model = word2vec.Word2Vec.load(r'news_dim32_ep30.model')
 
     ret = []
@@ -212,18 +164,18 @@ def get_text_features_rumor(filename, num):
             st = []
             it = 1
             for word in text_seg:
-                if it > 100:
+                if it > num:
                     break
                 it = it + 1
                 st.append(w2v_model.wv[word].tolist())
-            for i in range(len(st), 100):
-                st.append([0 for x in range(1, 33)])
+            for i in range(len(st), num):
+                st.append([0 for x in range(0, dim)])
             ret.append(st)
         # print(len(ret))
     return ret
 
 
-def get_text_features_truth(filename, num):
+def get_text_features_truth(filename, num, dim):
     w2v_model = word2vec.Word2Vec.load(r'news_dim32_ep30.model')
     ret = []
     with open(filename, 'r', encoding='utf-8') as load_f:
@@ -239,47 +191,205 @@ def get_text_features_truth(filename, num):
             st = []
             it = 1
             for word in text_seg:
-                if it > 100:
+                if it > num:
                     break
                 it = it + 1
                 st.append(w2v_model.wv[word].tolist())
-            for i in range(len(st), 100):
-                st.append([0 for x in range(1, 33)])
+            for i in range(len(st), num):
+                st.append([0 for x in range(0, dim)])
             ret.append(st)
         # print(len(ret))
     return ret
 
 
-if __name__ == '__main__':
+def get_scores(model_file, X, y):
     """
-    训练lstm
-    1，注意文件名,使用不同dataset时，需要更改filename的名字
-    2，数据集文件不可变
-    3，可以通过修改参数word_size提取每个微博词的个数
+    对给定的模型和数据，获取分数
+    :param model:
+    :param X: datas
+    :param y: lables
+    :return:
     """
-    rumor_filename = "smallrumor.json"
-    truth_filename = "smalltruth.json"
-    word_size = 100 # 取多少个词
-    word_dim = 32   # 词向量维度
-    social_features_dim = 16  # social feature维度
-    nb_epoch = 100    # epoch训练次数
-    batch_size = 40 # 批大小
-    input_dim = word_dim + social_features_dim
+    model_load = load_model(model_file)
+
+    # 输出模型精度，这个keras自带的函数只能返回误差和精确度
+    scores = model_load.evaluate(X, y, verbose=0)
+    print("Model Accuracy: %.2f%%" % (scores[1] * 100))
+
+    # 重新在数据集上预测，获得更多指标
+    prediction = model_load.predict(X, verbose=0)  # 重新使用数据集
+    # print(prediction)
+    y_pred = []
+    for i in range(0, len(prediction)):
+        index = numpy.argmax(prediction[i])
+        temp = [0, 0]
+        temp[index] = 1
+        y_pred.append(numpy.array(temp))
+    y_pred = numpy.array(y_pred)
+    # print(y_pred)
+    # print(y)
+
+    precision = precision_score(y, y_pred, average='macro')
+    recall = recall_score(y, y_pred, average='macro')
+    accuracy = accuracy_score(y, y_pred)
+    f1 = f1_score(y, y_pred, average='macro')
+    # print("precision=%.2f%% recall=%.2f%% accuracy=%.2f%% f1=%.2f%% " % (precision, recall, accuracy, f1))
+    return precision, recall, accuracy, f1
+
+
+def get_test_result(val_X, val_y):
+    model_load = load_model(r'news_model_1.model.h5')
+    # 输出模型精度，这个keras自带的函数只能返回误差和精确度
+    scores = model_load.evaluate(val_X, val_y, verbose=0)
+    print("Model Accuracy: %.2f%%" % (scores[1] * 100))
+
+    # 重新在数据集上预测，获得更多指标
+    prediction = model_load.predict(val_X, verbose=0)  # 重新使用数据集
+    # print(prediction)
+    y_pred = []
+    for i in range(0, len(prediction)):
+        index = numpy.argmax(prediction[i])
+        temp = [0, 0]
+        temp[index] = 1
+        y_pred.append(numpy.array(temp))
+    y_pred = numpy.array(y_pred)
+    # print(y_pred)
+    # print(y)
+
+    precision = precision_score(val_y, y_pred, average='macro')
+    recall = recall_score(val_y, y_pred, average='macro')
+    accuracy = accuracy_score(val_y, y_pred)
+    f1 = f1_score(val_y, y_pred, average='macro')
+    print("precision=%.2f%% recall=%.2f%% accuracy=%.2f%% f1=%.2f%% " % (precision, recall, accuracy, f1))
+    return precision, recall, accuracy, f1
+
+
+def model_1(X, y, val_X, val_y):
+    print("开始训练模型1...")
+    time_start = time.time()
+    model = Sequential()
+    model.add(LSTM(32, input_shape=(X.shape[1], X.shape[2])))  # 这种情况下，lstm返回的就只是最后一个时间步的结果
+    model.add(Dense(y.shape[1], activation='softmax'))
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    # 输入的数据 X[一批大小,时间步,输入维度] 25 1 1
+    print("模型结构：")
+    print(model.summary())
+    # monitor 如果有验证集合，val_acc 或 val_loss ，否则就是acc和loss
+    early_stopping = EarlyStopping(monitor='loss', patience=5)
+
+    # 训练模型迭代轮次。一个轮次是在整个x或y上的一轮迭代
+    model.fit(X, y, nb_epoch=nb_epoch, validation_split=0.1, batch_size=batch_size, verbose=1, callbacks=[early_stopping])
+
+    model.save(r'news_model_1.model.h5')
+    time_end = time.time()
+    print("完成模型训练。用时：%f s" % (time_end - time_start))
+    print("模型已经保存为news_model_1.model.h5")
+
+    result = get_test_result(val_X, val_y)
+    print(result)
+
+    return
+
+    model_load = load_model(r'news_model_1.model.h5')
+    sc = model_load.evaluate(X, y, verbose=0)
+    print(sc)
+
+
+    # 我的验证集==还没弄
+    # 输出模型精度，这个keras自带的函数只能返回误差和精确度
+    scores = model.evaluate(X, y, verbose=0)
+    print("Model Accuracy: %.2f%%" % (scores[1] * 100))
+
+    # 重新在数据集上预测，获得更多指标
+    prediction = model.predict(X, verbose=0)  # 重新使用数据集
+    # print(prediction)
+    y_pred = []
+    for i in range(0, len(prediction)):
+        index = numpy.argmax(prediction[i])
+        temp = [0, 0]
+        temp[index] = 1
+        y_pred.append(numpy.array(temp))
+    y_pred = numpy.array(y_pred)
+    # print(y_pred)
+    # print(y)
+
+    precision = precision_score(y, y_pred, average='macro')
+    recall = recall_score(y, y_pred, average='macro')
+    accuracy = accuracy_score(y, y_pred)
+    f1 = f1_score(y, y_pred, average='macro')
+    # print("precision=%.2f%% recall=%.2f%% accuracy=%.2f%% f1=%.2f%% " % (precision, recall, accuracy, f1))
+    return precision, recall, accuracy, f1
+
+
+def model_2(X, y):
+    """
+    模型将每个时间步的结果平均
+    :param X:
+    :param y:
+    :return:
+    """
+    print("开始训练模型2...")
+    time_start = time.time()
+    model = Sequential()
+    model.add(LSTM(32, input_shape=(X.shape[1], X.shape[2]), return_sequences=True))  #
+
+    from keras.layers import AveragePooling1D, Reshape
+    # 平均池化，将100个时间步的结果平均
+    model.add(AveragePooling1D(pool_size=100, strides=None, padding='valid', data_format='channels_last'))
+    model.add(Reshape((32,)))
+    model.add(Dense(y.shape[1], activation='softmax'))
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    # 输入的数据 X[一批大小,时间步,输入维度] 25 1 1
+    print("模型结构：")
+    print(model.summary())
+    model.fit(X, y, epochs=nb_epoch, batch_size=batch_size, verbose=1)  # 训练模型迭代轮次。一个轮次是在整个x或y上的一轮迭代
+    time_end = time.time()
+    print("完成模型训练。用时：%f s" % (time_end - time_start))
+
+    # 输出模型精度
+    scores = model.evaluate(X, y, verbose=0)
+    print("Model Accuracy: %.2f%%" % (scores[1] * 100))
+
+    # 重新在数据集上预测，获得更多指标
+    prediction = model.predict(X, verbose=0)  # 重新使用数据集
+    # print(prediction)
+    y_pred = []
+    for i in range(0, len(prediction)):
+        index = numpy.argmax(prediction[i])
+        temp = [0, 0]
+        temp[index] = 1
+        y_pred.append(numpy.array(temp))
+    y_pred = numpy.array(y_pred)
+    # print(y_pred)
+    # print(y)
+
+    precision = precision_score(y, y_pred, average='macro')
+    recall = recall_score(y, y_pred, average='macro')
+    accuracy = accuracy_score(y, y_pred)
+    f1 = f1_score(y, y_pred, average='macro')
+    # print("precision=%.2f%% recall=%.2f%% accuracy=%.2f%% f1=%.2f%% " % (precision, recall, accuracy, f1))
+    return precision, recall, accuracy, f1
+
+
+def get_train_data(truth_filename, rumor_filename):
+    # filename:small_rumor.json、small_truth.json、moderate_truth.json、moderate_rumor.json
+    # truth_filename = "data_set/moderate_truth.json"
+    # rumor_filename = "data_set/moderate_rumor.json"
 
     # 得到数据集每个微博的social features
     all_social_features = get_social_features_rumor(rumor_filename)
     num1 = len(all_social_features)
     all_social_features = all_social_features + get_social_features_truth(truth_filename)
-    num2 = len(all_social_features)-num1
+    num2 = len(all_social_features) - num1
 
     # print(all_social_features)
     # print(len(all_social_features))
     print("提取了social features，%d 个rumor %d个truth" % (num1, num2))
 
     # 得到数据集每微博的text features
-    all_text_features = get_text_features_rumor(rumor_filename, word_size)
+    all_text_features = get_text_features_rumor(rumor_filename, word_size, word_dim)
     num1 = len(all_text_features)
-    all_text_features = all_text_features+get_text_features_truth(truth_filename, word_size)
+    all_text_features = all_text_features + get_text_features_truth(truth_filename, word_size, word_dim)
     num2 = len(all_text_features) - num1
 
     print("提取了text features，%d 个rumor %d个truth" % (num1, num2))
@@ -294,10 +404,12 @@ if __name__ == '__main__':
         data_x.append(numpy.array(temp_x))
     # print(len(datax))
     data_x = numpy.array(data_x)
+    X = data_x.reshape(num1 + num2, word_size, input_dim)
+    # print(X.shape)
 
     # 准备标签数据
     print("准备标签数据")
-    lables = [1 for i in range(0, num1)]+[0 for i in range(0, num2)]
+    lables = [1 for i in range(0, num1)] + [0 for i in range(0, num2)]
     # print(lables)
     # print(len(lables))
 
@@ -306,47 +418,28 @@ if __name__ == '__main__':
     y = np_utils.to_categorical(y)
     # print(y)
     print("标签数据准备完毕")
+    return X, y
 
-    print("构建模型")
 
-    X = data_x.reshape(num1+num2, word_size, input_dim)
-    # print(X.shape)
-    model = Sequential()
-    model.add(LSTM(32, input_shape=(X.shape[1], X.shape[2]))) # 这种情况下，lstm返回的就只是最后一个时间步的结果
-    model.add(Dense(y.shape[1], activation='softmax'))
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    # 输入的数据 X[一批大小,时间步,输入维度] 25 1 1
-    print("模型结构：")
-    print(model.summary())
+if __name__ == '__main__':
+    """
+    训练lstm
+    1，注意文件名,使用不同dataset时，需要更改filename的名字
+    2，数据集文件不可变
+    3，可以通过修改参数word_size提取每个微博词的个数
+    """
+    # 训练集合
+    train_X, train_y = get_train_data("data_set/moderate_truth.json", "data_set/moderate_rumor.json")
+    # 验证集
+    val_X, val_y = get_train_data("data_set/small_truth.json", "data_set/small_rumor.json")
 
-    print("开始训练模型...")
-    time_start = time.time()
-    model.fit(X, y, nb_epoch=nb_epoch, batch_size=batch_size, verbose=1)  # 训练模型迭代轮次。一个轮次是在整个x或y上的一轮迭代
-    time_end = time.time()
-    print("完成模型训练。用时：%f s" % (time_end - time_start))
-
-    # 输出模型精度
-    scores = model.evaluate(X, y, verbose=0)
-    print("Model Accuracy: %.2f%%" % (scores[1]*100))
-
-    # 重新在数据集上预测，获得更多指标
-    prediction = model.predict(X, verbose=0)  # 重新使用数据集
-    print(prediction)
-    y_pred = []
-    for i in range(0, len(prediction)):
-        index = numpy.argmax(prediction[i])
-        temp = [0, 0]
-        temp[index] = 1
-        y_pred.append(numpy.array(temp))
-    y_pred = numpy.array(y_pred)
-    print(y_pred)
-    print(y)
-
-    precision = precision_score(y, y_pred, average='macro')
-    recall = recall_score(y, y_pred, average='macro')
-    accuracy = accuracy_score(y, y_pred)
-    f1 = f1_score(y, y_pred, average='macro')
+    # 运行模型1
+    precision, recall, accuracy, f1 = model_1(train_X, train_y, val_X, val_y)
     print("precision=%.2f%% recall=%.2f%% accuracy=%.2f%% f1=%.2f%% " % (precision, recall, accuracy, f1))
+
+    # 运行模型2
+    # precision, recall, accuracy, f1 = model_2(X, y)
+    # print("precision=%.2f%% recall=%.2f%% accuracy=%.2f%% f1=%.2f%% " % (precision, recall, accuracy, f1))
 
 '''
 if __name__ == '__main__' and sys.argv[1]=='train_word2vector':
