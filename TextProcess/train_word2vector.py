@@ -68,7 +68,7 @@ def word_vectorizer_process(data_set):
     :param data_set:
     :return: 生成词向量模型文件
     """
-    vector_size = 32   # 词向量大小
+    vector_size = 64   # 词向量大小
     window_size = 5    # Maximum distance between the current and predicted word within a sentence.
     min_count = 1      # Ignores all words with total frequency lower than this.
     negative_size = 5  # 负采样？
@@ -86,7 +86,7 @@ def word_vectorizer_process(data_set):
     model = word2vec.Word2Vec(sentences, size=vector_size, window=window_size, min_count=min_count,
                               workers=worker_count, negative=negative_size, iter=train_epoch)
     # print(model.wv[u'座谈会']) 可以通过此方法简单获得一个词的词向量
-    model.save(r'news_dim32_ep30.model')
+    model.save(r'news_dim64_ep30.model')
 
 
 if __name__ == '__main__':
@@ -96,16 +96,17 @@ if __name__ == '__main__':
     2，注意文件名,使用不同dataset时，需要更改filename的名字
     3，dataset文件格式一定是每行一个json对象，必要的属性不缺少
     4，文本内容不区分谣言和非谣言，直接作为一个整体的语料训练
+    5，文件名moderate_rumor、moderate_truth、small_rumor、small_truth
     """
-    rumor_filename = "data_set/moderate_rumor.json"
-    truth_filename = "data_set/moderate_truth.json"
+    rumor_filename = "data_set/test_rumor.json"
+    truth_filename = "data_set/test_truth.json"
 
     # 获取微博中文本内容
     content_rumor = read_rumor(rumor_filename)
     content_truth = read_truth(truth_filename)
 
-    content_rumor_small = read_rumor("data_set/small_rumor.json")
-    content_truth_small = read_truth("data_set/small_truth.json")
+    content_rumor_small = read_rumor("data_set/train_rumor.json")
+    content_truth_small = read_truth("data_set/train_truth.json")
 
     content_rumor = content_rumor + content_rumor_small
     content_truth = content_truth + content_truth_small

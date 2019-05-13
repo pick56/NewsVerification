@@ -1,5 +1,6 @@
 # coding=utf-8
 import jieba
+import jieba.posseg as pseg
 from sklearn.datasets import dump_svmlight_file
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
@@ -140,17 +141,18 @@ def get_social_features_rumor(filename):
             all_social_features.append(text.count('?') + text.count('？'))  # number_of_question_mark
             all_social_features.append(len(word_seg(text)))  # number_of_words
             all_social_features.append(len(text))  # number_of_characters
-            all_social_features.append(0)  # number_of_positive_words
-            all_social_features.append(0)  # number_of_negative_words
-            all_social_features.append(0)  # number_of_first_pronoun
-            all_social_features.append(0)  # number_of_second_pronoun
-            all_social_features.append(0)  # number_of_third_pronoun
+            all_social_features.append(find_in_dic("dic/positive_emotions.txt", word_seg(text)))  # number_of_positive_words
+            all_social_features.append(find_in_dic("dic/negative_emotions.txt", word_seg(text)))  # number_of_negative_words
+            all_social_features.append(find_in_dic("dic/first_pronoun.txt", word_seg(text)))  # number_of_first_pronoun
+            all_social_features.append(find_in_dic("dic/second_pronoun.txt", word_seg(text)))  # number_of_second_pronoun
+            all_social_features.append(find_in_dic("dic/third_pronoun.txt", word_seg(text)))  # number_of_third_pronoun
             all_social_features.append(text.count("https://")+text.count("http://"))  # number_of_url
             all_social_features.append(text.count('@'))  # number_of_at
             all_social_features.append(text.count('#'))  # number_of_num
-            all_social_features.append(0)  # number_of_people
-            all_social_features.append(0)  # number_of_location
-            all_social_features.append(0)  # number_of_organization
+            num1, num2, num3 = get_ner(text)
+            all_social_features.append(num1)  # number_of_people
+            all_social_features.append(num2)  # number_of_location
+            all_social_features.append(num3)  # number_of_organization
             all_social_features.append(0)  # Sentiment_score
             # print(all_social_features)
             ret.append(all_social_features)
@@ -177,17 +179,18 @@ def get_social_features_truth(filename):
             all_social_features.append(text.count('?') + text.count('？'))  # number_of_question_mark
             all_social_features.append(len(word_seg(text)))  # number_of_words
             all_social_features.append(len(text))  # number_of_characters
-            all_social_features.append(0)  # number_of_positive_words
-            all_social_features.append(0)  # number_of_negative_words
-            all_social_features.append(0)  # number_of_first_pronoun
-            all_social_features.append(0)  # number_of_second_pronoun
-            all_social_features.append(0)  # number_of_third_pronoun
+            all_social_features.append(find_in_dic("dic/positive_emotions.txt", word_seg(text)))  # number_of_positive_words
+            all_social_features.append(find_in_dic("dic/negative_emotions.txt", word_seg(text)))  # number_of_negative_words
+            all_social_features.append(find_in_dic("dic/first_pronoun.txt", word_seg(text)))  # number_of_first_pronoun
+            all_social_features.append(find_in_dic("dic/second_pronoun.txt", word_seg(text)))  # number_of_second_pronoun
+            all_social_features.append(find_in_dic("dic/third_pronoun.txt", word_seg(text)))  # number_of_third_pronoun
             all_social_features.append(text.count("https://")+text.count("http://"))  # number_of_url
             all_social_features.append(text.count('@'))  # number_of_at
             all_social_features.append(text.count('#'))  # number_of_num
-            all_social_features.append(0)  # number_of_people
-            all_social_features.append(0)  # number_of_location
-            all_social_features.append(0)  # number_of_organization
+            num1, num2, num3 = get_ner(text)
+            all_social_features.append(num1)  # number_of_people
+            all_social_features.append(num2)  # number_of_location
+            all_social_features.append(num3)  # number_of_organization
             all_social_features.append(0)  # Sentiment_score
             # print(all_social_features)
             ret.append(all_social_features)
@@ -249,6 +252,74 @@ def get_text_features_truth(filename, num):
     return ret
 
 
+def get_ner(text):
+    """
+    输入未分词的文本，桉树徐输出人名、地名、组织名数目
+    按照ictcls的定义
+    nr人名
+    nr1 汉语姓氏
+    nr2 汉语名字
+    nrj 日语人名
+    nrf 音译人名
+
+    ns 地名
+    nsf 音译地名
+
+    nt 机构团体名
+    :param text:
+    :return: 三元组
+    """
+    people = 0
+    local = 0
+    org = 0
+    words = pseg.cut(text)
+    for word, flag in words:
+        print(word, flag)
+        if flag[0:2] == "nr":
+            people = people + 1
+        if flag[0:2] == "ns":
+            local = local + 1
+        if flag[0:2] == "nt":
+            org = org + 1
+    return people, local, org
+
+def find_in_dic(filename, text):
+    """
+    微博文本在某类词典中出现个数
+    :param filename: 词典文件名
+    :param text: 分完词后的微博文本
+    :return: 出现个数
+    """
+    ret = 0
+    # 微博中每个词在词典中是否出现
+    dic_list = []
+    with open(filename, 'r', encoding='utf-8') as load_f:
+        for line in load_f.readlines():
+            line = line.strip()
+            if not len(line):
+                continue
+            dic_list.append(line)
+
+    # 循环每个微博中的词
+    # print(text)
+    for word in text:
+        word = word.strip()
+        # print(word)
+        if not len(word):
+            continue
+        # 循环每个词典中的词
+        for line in dic_list:
+            line = line.strip()
+            if not len(line):
+                continue
+            # 匹配了
+            # print(word+" "+line)
+            if word == line:
+                ret = ret + 1
+                break
+    return ret
+
+
 if __name__ == '__main__':
 
     # 这部分就是训练词向量的
@@ -276,7 +347,17 @@ if __name__ == '__main__':
     #
     # print("词向量训练ok")
 
+    ans = get_ner("我爱北京天安门，天安门前太阳升，我叫二狗子，今年去了台湾，参加西戎会第一次见面活动,联合国组织，汉语协会")
+    print(ans)
+    print(1/0)
 
+    list = word_seg("我爱北京天安门")
+    print(list)
+    count = find_in_dic("dic/positive_emotions.txt", list)
+    print(count)
+    count1 = find_in_dic("dic/first_pronoun.txt", list)
+    print(count1)
+    # print(1/0)
 
 
 
@@ -291,8 +372,10 @@ if __name__ == '__main__':
 
 
     # 得到数据集每个微博的social features
-    all_social_features = get_social_features_rumor("smallrumor.json")
-    all_social_features = all_social_features + get_social_features_truth("smalltruth.json")
+    all_social_features = get_social_features_rumor("data_set/small_rumor.json")
+    print(all_social_features)
+    print(1/0)
+    all_social_features = all_social_features + get_social_features_truth("data_set/small_truth.json")
 
     print(all_social_features)
     print(len(all_social_features))

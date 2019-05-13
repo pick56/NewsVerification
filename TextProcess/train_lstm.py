@@ -1,5 +1,6 @@
 # coding=utf-8
 import jieba
+import jieba.posseg as pseg
 from sklearn.datasets import dump_svmlight_file
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
@@ -14,7 +15,9 @@ from keras.layers import Dense
 from keras.layers import LSTM
 from keras.utils import np_utils
 from keras.callbacks import EarlyStopping
-from sklearn.metrics import precision_score, accuracy_score ,recall_score, f1_score
+from sklearn.metrics import precision_score, accuracy_score, recall_score, f1_score
+
+import senti_score
 
 word_size = 100           # 每个微博取多少个词
 word_dim = 32             # 词向量的维度
@@ -42,6 +45,75 @@ def count_words(str, words):
     for word in words:
         ret += str.count(word)
     return ret
+
+
+def find_in_dic(filename, text):
+    """
+    微博文本在某类词典中出现个数
+    :param filename: 词典文件名
+    :param text: 分完词后的微博文本
+    :return: 出现个数
+    """
+    ret = 0
+    # 微博中每个词在词典中是否出现
+    dic_list = []
+    with open(filename, 'r', encoding='utf-8') as load_f:
+        for line in load_f.readlines():
+            line = line.strip()
+            if not len(line):
+                continue
+            dic_list.append(line)
+
+    # 循环每个微博中的词
+    # print(text)
+    for word in text:
+        word = word.strip()
+        # print(word)
+        if not len(word):
+            continue
+        # 循环每个词典中的词
+        for line in dic_list:
+            line = line.strip()
+            if not len(line):
+                continue
+            # 匹配了
+            # print(word+" "+line)
+            if word == line:
+                ret = ret + 1
+                break
+    return ret
+
+
+def get_ner(text):
+    """
+    输入未分词的文本，桉树徐输出人名、地名、组织名数目
+    按照ictcls的定义
+    nr人名
+    nr1 汉语姓氏
+    nr2 汉语名字
+    nrj 日语人名
+    nrf 音译人名
+
+    ns 地名
+    nsf 音译地名
+
+    nt 机构团体名
+    :param text:
+    :return: 三元组
+    """
+    people = 0
+    local = 0
+    org = 0
+    words = pseg.cut(text)
+    for word, flag in words:
+        print(word, flag)
+        if flag[0:2] == "nr":
+            people = people + 1
+        if flag[0:2] == "ns":
+            local = local + 1
+        if flag[0:2] == "nt":
+            org = org + 1
+    return people, local, org
 
 
 def get_social_features_rumor(filename):
@@ -93,18 +165,19 @@ def get_social_features_rumor(filename):
             all_social_features.append(text.count('?') + text.count('？'))  # number_of_question_mark
             all_social_features.append(len(word_seg(text)))  # number_of_words
             all_social_features.append(len(text))  # number_of_characters
-            all_social_features.append(0)  # number_of_positive_words
-            all_social_features.append(0)  # number_of_negative_words
-            all_social_features.append(0)  # number_of_first_pronoun
-            all_social_features.append(0)  # number_of_second_pronoun
-            all_social_features.append(0)  # number_of_third_pronoun
+            all_social_features.append(find_in_dic("dic/emotion_dic/positive.txt", word_seg(text)))  # number_of_positive_words
+            all_social_features.append(find_in_dic("dic/emotion_dic/negative.txt", word_seg(text)))  # number_of_negative_words
+            all_social_features.append(find_in_dic("dic/first_pronoun.txt", word_seg(text)))  # number_of_first_pronoun
+            all_social_features.append(find_in_dic("dic/second_pronoun.txt", word_seg(text)))  # number_of_second_pronoun
+            all_social_features.append(find_in_dic("dic/third_pronoun.txt", word_seg(text)))  # number_of_third_pronoun
             all_social_features.append(text.count("https://")+text.count("http://"))  # number_of_url
             all_social_features.append(text.count('@'))  # number_of_at
             all_social_features.append(text.count('#'))  # number_of_num
-            all_social_features.append(0)  # number_of_people
-            all_social_features.append(0)  # number_of_location
-            all_social_features.append(0)  # number_of_organization
-            all_social_features.append(0)  # Sentiment_score
+            num1, num2, num3 = get_ner(text)
+            all_social_features.append(num1)  # number_of_people
+            all_social_features.append(num2)  # number_of_location
+            all_social_features.append(num3)  # number_of_organization
+            all_social_features.append(senti_score.sentiment_score(text))  # Sentiment_score
             # print(all_social_features)
             ret.append(all_social_features)
     return ret
@@ -130,25 +203,26 @@ def get_social_features_truth(filename):
             all_social_features.append(text.count('?') + text.count('？'))  # number_of_question_mark
             all_social_features.append(len(word_seg(text)))  # number_of_words
             all_social_features.append(len(text))  # number_of_characters
-            all_social_features.append(0)  # number_of_positive_words
-            all_social_features.append(0)  # number_of_negative_words
-            all_social_features.append(0)  # number_of_first_pronoun
-            all_social_features.append(0)  # number_of_second_pronoun
-            all_social_features.append(0)  # number_of_third_pronoun
+            all_social_features.append(find_in_dic("dic/emotion_dic/positive.txt", word_seg(text)))  # number_of_positive_words
+            all_social_features.append(find_in_dic("dic/emotion_dic/negative.txt", word_seg(text)))  # number_of_negative_words
+            all_social_features.append(find_in_dic("dic/first_pronoun.txt", word_seg(text)))  # number_of_first_pronoun
+            all_social_features.append(find_in_dic("dic/second_pronoun.txt", word_seg(text)))  # number_of_second_pronoun
+            all_social_features.append(find_in_dic("dic/third_pronoun.txt", word_seg(text)))  # number_of_third_pronoun
             all_social_features.append(text.count("https://")+text.count("http://"))  # number_of_url
             all_social_features.append(text.count('@'))  # number_of_at
             all_social_features.append(text.count('#'))  # number_of_num
-            all_social_features.append(0)  # number_of_people
-            all_social_features.append(0)  # number_of_location
-            all_social_features.append(0)  # number_of_organization
-            all_social_features.append(0)  # Sentiment_score
+            num1, num2, num3 = get_ner(text)
+            all_social_features.append(num1)  # number_of_people
+            all_social_features.append(num2)  # number_of_location
+            all_social_features.append(num3)  # number_of_organization
+            all_social_features.append(senti_score.sentiment_score(text))  # Sentiment_score
             # print(all_social_features)
             ret.append(all_social_features)
     return ret
 
 
 def get_text_features_rumor(filename, num, dim):
-    w2v_model = word2vec.Word2Vec.load(r'news_dim32_ep30.model')
+    w2v_model = word2vec.Word2Vec.load(r'news_dim64_ep30.model')
 
     ret = []
     with open(filename, 'r', encoding='utf-8') as load_f:
@@ -264,6 +338,56 @@ def get_test_result(val_X, val_y):
     return precision, recall, accuracy, f1
 
 
+def get_train_data(rumor_filename, truth_filename):
+    # filename:small_rumor.json、small_truth.json、moderate_truth.json、moderate_rumor.json
+    # truth_filename = "data_set/moderate_truth.json"
+    # rumor_filename = "data_set/moderate_rumor.json"
+
+    # 得到数据集每个微博的social features
+    all_social_features = get_social_features_rumor(rumor_filename)
+    num1 = len(all_social_features)
+    all_social_features = all_social_features + get_social_features_truth(truth_filename)
+    num2 = len(all_social_features) - num1
+
+    # print(all_social_features)
+    # print(len(all_social_features))
+    print("提取了social features，%d 个rumor %d个truth" % (num1, num2))
+
+    # 得到数据集每微博的text features
+    all_text_features = get_text_features_rumor(rumor_filename, word_size, word_dim)
+    num1 = len(all_text_features)
+    all_text_features = all_text_features + get_text_features_truth(truth_filename, word_size, word_dim)
+    num2 = len(all_text_features) - num1
+
+    print("提取了text features，%d 个rumor %d个truth" % (num1, num2))
+
+    print("转换为训练数据")
+    data_x = []
+    for i in range(0, num1 + num2):  # 对每个微博
+        temp_x = []
+        for temp in all_text_features[i]:  # 100个词
+            # print(len(temp + all_social_features[i]))
+            temp_x.append(numpy.array(temp + all_social_features[i]))
+        data_x.append(numpy.array(temp_x))
+    # print(len(datax))
+    data_x = numpy.array(data_x)
+    X = data_x.reshape(num1 + num2, word_size, input_dim)
+    # print(X.shape)
+
+    # 准备标签数据
+    print("准备标签数据")
+    lables = [1 for i in range(0, num1)] + [0 for i in range(0, num2)]
+    # print(lables)
+    # print(len(lables))
+
+    y = numpy.array(lables)
+    # 将数据变成one-hot形式
+    y = np_utils.to_categorical(y)
+    # print(y)
+    print("标签数据准备完毕")
+    return X, y
+
+
 def model_1(X, y, val_X, val_y):
     print("开始训练模型1...")
     time_start = time.time()
@@ -371,56 +495,6 @@ def model_2(X, y):
     return precision, recall, accuracy, f1
 
 
-def get_train_data(truth_filename, rumor_filename):
-    # filename:small_rumor.json、small_truth.json、moderate_truth.json、moderate_rumor.json
-    # truth_filename = "data_set/moderate_truth.json"
-    # rumor_filename = "data_set/moderate_rumor.json"
-
-    # 得到数据集每个微博的social features
-    all_social_features = get_social_features_rumor(rumor_filename)
-    num1 = len(all_social_features)
-    all_social_features = all_social_features + get_social_features_truth(truth_filename)
-    num2 = len(all_social_features) - num1
-
-    # print(all_social_features)
-    # print(len(all_social_features))
-    print("提取了social features，%d 个rumor %d个truth" % (num1, num2))
-
-    # 得到数据集每微博的text features
-    all_text_features = get_text_features_rumor(rumor_filename, word_size, word_dim)
-    num1 = len(all_text_features)
-    all_text_features = all_text_features + get_text_features_truth(truth_filename, word_size, word_dim)
-    num2 = len(all_text_features) - num1
-
-    print("提取了text features，%d 个rumor %d个truth" % (num1, num2))
-
-    print("转换为训练数据")
-    data_x = []
-    for i in range(0, num1 + num2):  # 对每个微博
-        temp_x = []
-        for temp in all_text_features[i]:  # 100个词
-            # print(len(temp + all_social_features[i]))
-            temp_x.append(numpy.array(temp + all_social_features[i]))
-        data_x.append(numpy.array(temp_x))
-    # print(len(datax))
-    data_x = numpy.array(data_x)
-    X = data_x.reshape(num1 + num2, word_size, input_dim)
-    # print(X.shape)
-
-    # 准备标签数据
-    print("准备标签数据")
-    lables = [1 for i in range(0, num1)] + [0 for i in range(0, num2)]
-    # print(lables)
-    # print(len(lables))
-
-    y = numpy.array(lables)
-    # 将数据变成one-hot形式
-    y = np_utils.to_categorical(y)
-    # print(y)
-    print("标签数据准备完毕")
-    return X, y
-
-
 if __name__ == '__main__':
     """
     训练lstm
@@ -429,9 +503,9 @@ if __name__ == '__main__':
     3，可以通过修改参数word_size提取每个微博词的个数
     """
     # 训练集合
-    train_X, train_y = get_train_data("data_set/moderate_truth.json", "data_set/moderate_rumor.json")
+    train_X, train_y = get_train_data("data_set/moderate_rumor.json", "data_set/moderate_truth.json")
     # 验证集
-    val_X, val_y = get_train_data("data_set/small_truth.json", "data_set/small_rumor.json")
+    val_X, val_y = get_train_data("data_set/small_rumor.json", "data_set/small_truth.json")
 
     # 运行模型1
     precision, recall, accuracy, f1 = model_1(train_X, train_y, val_X, val_y)
@@ -440,27 +514,3 @@ if __name__ == '__main__':
     # 运行模型2
     # precision, recall, accuracy, f1 = model_2(X, y)
     # print("precision=%.2f%% recall=%.2f%% accuracy=%.2f%% f1=%.2f%% " % (precision, recall, accuracy, f1))
-
-'''
-if __name__ == '__main__' and sys.argv[1]=='train_word2vector':
-
-问题：
-1，truth中21个属性
-
-2，rumor17个属性，10个是微博的，7个是用户的
-
-3，都有的共同属性14-1个，其中1个不确定
-
-4，哪个部分是textual feature
-微博内容，截断前100个字符
-得到100个32维度的向量
-
-5，social context feature
-得到1个16维的向量
-
-6，1个16维的向量全连接变成1个32维的向量
-7，一个微博的textual feature和social textual feature就是71个32维的向量
-8，然后用71个cell的lstm，跑一个many2many得到71个32维的向量，平均一下就是一个32维的向量
-9，然后和图片融合，最基本的融合就是图片的32维和文本的32维拼接在一起，变成64维度的东西
-10，然后全连接层，做一个softmax二分类
-'''
