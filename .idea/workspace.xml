@@ -2,30 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a7402f7b-c785-4e72-96f4-00cad0491df7" name="Default Changelist" comment="优化代码结构,增加earlystop,保存模型，词语料拓展到1100，增加dataset文件夹等等">
-      <change afterPath="$PROJECT_DIR$/TextProcess/dic/emotion_dic/negative.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/dic/emotion_dic/positive.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/dic/emotion_dic/senti_score.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/dic/emotion_dic/否定词.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/dic/emotion_dic/程度级别词语.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/dic/first_pronoun.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/dic/negative_emotions.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/dic/negative_evaluation.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/dic/positive_emotions.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/dic/positive_evaluation.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/dic/proposition.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/dic/second_pronoun.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/dic/third_pronoun.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/extract_numpy_array.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/news_dim64_ep30.model" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/senti_score.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TextProcess/train_baseline_lstm.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/NewsVerification.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/NewsVerification.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TextProcess/helloword.py" beforeDir="false" afterPath="$PROJECT_DIR$/TextProcess/helloword.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TextProcess/news_dim32_ep30.model" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/TextProcess/news_seg_word_data" beforeDir="false" afterPath="$PROJECT_DIR$/TextProcess/news_seg_word_data" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TextProcess/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/TextProcess/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TextProcess/train_lstm.py" beforeDir="false" afterPath="$PROJECT_DIR$/TextProcess/train_lstm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TextProcess/train_baseline_lstm.py" beforeDir="false" afterPath="$PROJECT_DIR$/TextProcess/train_baseline_lstm.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TextProcess/train_word2vector.py" beforeDir="false" afterPath="$PROJECT_DIR$/TextProcess/train_word2vector.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,9 +17,9 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/NewsVerification$wangdaqian.coverage" NAME="wangdaqian Coverage Results" MODIFIED="1557741289883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TextProcess" />
+    <SUITE FILE_PATH="coverage/NewsVerification$wangdaqian.coverage" NAME="wangdaqian Coverage Results" MODIFIED="1557821819311" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TextProcess" />
     <SUITE FILE_PATH="coverage/NewsVerification$helloword.coverage" NAME="helloword Coverage Results" MODIFIED="1557661054420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TextProcess" />
-    <SUITE FILE_PATH="coverage/NewsVerification$train_word2vector.coverage" NAME="train_word2vector Coverage Results" MODIFIED="1557662494446" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TextProcess" />
+    <SUITE FILE_PATH="coverage/NewsVerification$train_word2vector.coverage" NAME="train_word2vector Coverage Results" MODIFIED="1557822500725" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TextProcess" />
     <SUITE FILE_PATH="coverage/NewsVerification$train_lstm.coverage" NAME="train_lstm Coverage Results" MODIFIED="1557070418619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TextProcess" />
     <SUITE FILE_PATH="coverage/NewsVerification$senti_score.coverage" NAME="senti_score Coverage Results" MODIFIED="1557668465942" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TextProcess" />
     <SUITE FILE_PATH="coverage/NewsVerification$extract_numpy.coverage" NAME="extract_numpy Coverage Results" MODIFIED="1557653897904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TextProcess/参考" />
@@ -45,27 +27,15 @@
     <SUITE FILE_PATH="coverage/NewsVerification$helloworld.coverage" NAME="helloworld Coverage Results" MODIFIED="1556956212569" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TextProcess" />
     <SUITE FILE_PATH="coverage/NewsVerification$extract_numpy_array.coverage" NAME="extract_numpy_array Coverage Results" MODIFIED="1557739439719" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TextProcess" />
     <SUITE FILE_PATH="coverage/NewsVerification$test.coverage" NAME="test Coverage Results" MODIFIED="1556176925549" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TextProcess" />
-    <SUITE FILE_PATH="coverage/NewsVerification$train_baseline_lstm.coverage" NAME="train_baseline_lstm Coverage Results" MODIFIED="1557736251202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TextProcess" />
+    <SUITE FILE_PATH="coverage/NewsVerification$train_baseline_lstm.coverage" NAME="train_baseline_lstm Coverage Results" MODIFIED="1557822232703" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TextProcess" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TextProcess/train_word2vector.py">
+        <entry file="file://$PROJECT_DIR$/TextProcess/train_w2v_simple.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="101">
-              <caret line="80" column="30" lean-forward="true" selection-start-line="80" selection-start-column="30" selection-end-line="80" selection-end-column="30" />
-              <folding>
-                <element signature="e#15#27#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/TextProcess/wangdaqian.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="38" column="13" lean-forward="true" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+            <state relative-caret-position="310">
+              <caret line="29" selection-start-line="29" selection-end-line="29" />
               <folding>
                 <element signature="e#15#27#0" expanded="true" />
               </folding>
@@ -76,8 +46,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TextProcess/train_lstm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1146">
-              <caret line="444" column="23" selection-start-line="444" selection-start-column="23" selection-end-line="444" selection-end-column="23" />
+            <state relative-caret-position="828">
+              <caret line="431" column="36" selection-start-line="431" selection-start-column="36" selection-end-line="431" selection-end-column="36" />
               <folding>
                 <element signature="e#15#27#0" expanded="true" />
               </folding>
@@ -85,11 +55,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TextProcess/train_baseline_lstm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="325">
-              <caret line="139" column="23" selection-start-line="139" selection-start-column="23" selection-end-line="139" selection-end-column="23" />
+            <state relative-caret-position="234">
+              <caret line="260" column="9" lean-forward="true" selection-start-line="260" selection-start-column="9" selection-end-line="260" selection-end-column="9" />
               <folding>
                 <element signature="e#15#27#0" expanded="true" />
               </folding>
@@ -98,13 +68,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TextProcess/extract_numpy_array.py">
+        <entry file="file://$PROJECT_DIR$/TextProcess/train_word2vector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="82">
-              <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+            <state relative-caret-position="285">
+              <caret line="108" column="58" selection-start-line="108" selection-start-column="47" selection-end-line="108" selection-end-column="58" />
               <folding>
-                <element signature="e#0#72#0" expanded="true" />
+                <element signature="e#15#27#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TextProcess/all_data_seg.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="19">
+              <caret line="15" column="32" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -112,8 +91,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TextProcess/news_seg_word_data">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret column="144281" selection-start-column="144276" selection-end-column="144281" />
+            <state relative-caret-position="183">
+              <caret line="2938" column="26" selection-start-line="2938" selection-start-column="26" selection-end-line="2938" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -121,7 +100,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TextProcess/参考/extract_numpy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-180">
+            <state relative-caret-position="285">
               <caret line="21" column="86" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="86" />
               <folding>
                 <element signature="e#0#72#0" expanded="true" />
@@ -133,7 +112,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TextProcess/helloword.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-6384">
+            <state relative-caret-position="171">
               <caret line="9" selection-start-line="9" selection-end-line="9" />
             </state>
           </provider>
@@ -142,7 +121,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TextProcess/参考/BiLstm_Att.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-730">
+            <state relative-caret-position="171">
               <caret line="20" selection-start-line="20" selection-end-line="20" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
@@ -176,8 +155,10 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>民</find>
-      <find>民营</find>
       <find>pre</find>
+      <find>based</find>
+      <find>民营</find>
+      <find>民营企业</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -204,16 +185,17 @@
         <option value="$PROJECT_DIR$/TextProcess/senti_score.py" />
         <option value="$PROJECT_DIR$/TextProcess/train_lstm.py" />
         <option value="$PROJECT_DIR$/TextProcess/参考/extract_numpy.py" />
-        <option value="$PROJECT_DIR$/TextProcess/train_baseline_lstm.py" />
         <option value="$PROJECT_DIR$/TextProcess/extract_numpy_array.py" />
-        <option value="$PROJECT_DIR$/TextProcess/train_word2vector.py" />
         <option value="$PROJECT_DIR$/TextProcess/wangdaqian.py" />
+        <option value="$PROJECT_DIR$/TextProcess/train_w2v_simple.py" />
+        <option value="$PROJECT_DIR$/TextProcess/train_baseline_lstm.py" />
+        <option value="$PROJECT_DIR$/TextProcess/train_word2vector.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="161" />
-    <option name="y" value="-17" />
+    <option name="x" value="152" />
+    <option name="y" value="25" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
@@ -223,6 +205,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -239,11 +222,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="E:/AAA/anaconda/Scripts/conda.exe" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -268,7 +251,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.wangdaqian">
+  <component name="RunManager" selected="Python.train_word2vector">
     <configuration name="extract_numpy_array" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="NewsVerification" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -370,7 +353,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TextProcess/wangdaqian.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\24441\Desktop\github\NewsVerification\TextProcess\train_w2v_simple.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -381,11 +364,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.train_word2vector" />
+        <item itemvalue="Python.train_baseline_lstm" />
         <item itemvalue="Python.wangdaqian" />
         <item itemvalue="Python.extract_numpy_array" />
-        <item itemvalue="Python.train_baseline_lstm" />
         <item itemvalue="Python.senti_score" />
-        <item itemvalue="Python.train_word2vector" />
       </list>
     </recent_temporary>
   </component>
@@ -404,7 +387,12 @@
       <workItem from="1556347047276" duration="3980000" />
       <workItem from="1556777516892" duration="45475000" />
       <workItem from="1557038739242" duration="12664000" />
-      <workItem from="1557476864933" duration="35341000" />
+      <workItem from="1557476864933" duration="39843000" />
+      <workItem from="1557759882561" duration="4039000" />
+      <workItem from="1557799198671" duration="3930000" />
+      <workItem from="1557803818600" duration="2978000" />
+      <workItem from="1557815972665" duration="2061000" />
+      <workItem from="1557818173432" duration="4032000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1556073971394</created>
@@ -448,11 +436,18 @@
       <option name="project" value="LOCAL" />
       <updated>1557073891858</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="增加词典，增加纯文本实验，修改词向量维度">
+      <created>1557741901903</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1557741901906</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="122808000" />
+    <option name="totallyTimeSpent" value="144350000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -466,12 +461,12 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1858" height="1096" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.56414765" visible="true" weight="0.19688542" />
-      <window_info id="Structure" order="1" sideWeight="0.43585238" side_tool="true" visible="true" weight="0.19688542" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.5588752" visible="true" weight="0.2080089" />
+      <window_info id="Structure" order="1" sideWeight="0.44112477" side_tool="true" weight="0.2080089" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32952183" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.40852392" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49944383" visible="true" weight="0.40852392" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -479,9 +474,9 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32952183" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5005562" side_tool="true" weight="0.32952183" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32952183" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.32952183" />
+      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49944383" weight="0.32952183" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -539,37 +534,10 @@
     <MESSAGE value="第4次提交&#10;优化代码结构" />
     <MESSAGE value="优化代码结构,增加earlystop,保存模型，词语料拓展到1100，增加dataset文件夹等等" />
     <MESSAGE value="。。优化代码结构,增加earlystop,保存模型，词语料拓展到1100，增加dataset文件夹等等" />
-    <option name="LAST_COMMIT_MESSAGE" value="。。优化代码结构,增加earlystop,保存模型，词语料拓展到1100，增加dataset文件夹等等" />
+    <MESSAGE value="增加词典，增加纯文本实验，修改词向量维度" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加词典，增加纯文本实验，修改词向量维度" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/demo.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/news_dim32_ep30_model" />
-    <entry file="file://$PROJECT_DIR$/TextProcess/test.txt" />
-    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/1420887704/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="89908">
-          <caret line="4732" column="8" selection-start-line="4732" selection-start-column="8" selection-end-line="4732" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/truth.json">
-      <provider selected="true" editor-type-id="LargeFileEditor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/keras/backend/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="97" column="34" lean-forward="true" selection-start-line="97" selection-start-column="34" selection-end-line="97" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/dataset.txt" />
-    <entry file="file://$PROJECT_DIR$/TextProcess/helloworld.py" />
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/keras/callbacks.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
@@ -577,20 +545,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/smallrumor.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/smalltruth.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/TextProcess/smallrumor.json" />
+    <entry file="file://$PROJECT_DIR$/TextProcess/smalltruth.json" />
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/keras/engine/network.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="181">
@@ -747,33 +703,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/readme.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="171">
-            <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/helloword.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6384">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/参考/BiLstm_Att.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-730">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TextProcess/senti_score.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="101">
@@ -791,16 +720,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/train_lstm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1146">
-          <caret line="444" column="23" selection-start-line="444" selection-start-column="23" selection-end-line="444" selection-end-column="23" />
-          <folding>
-            <element signature="e#15#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/keras/engine/training.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="95">
@@ -808,29 +727,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/train_baseline_lstm.py">
+    <entry file="file://E:/AAA/anaconda/envs/newsverification/Lib/site-packages/sklearn/base.py" />
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/gensim/models/base_any2vec.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="139" column="23" selection-start-line="139" selection-start-column="23" selection-end-line="139" selection-end-column="23" />
-          <folding>
-            <element signature="e#15#27#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="340">
+          <caret line="45" column="9" selection-start-line="45" selection-start-column="9" selection-end-line="45" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/参考/extract_numpy.py">
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/gensim/models/word2vec.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-180">
-          <caret line="21" column="86" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="86" />
-          <folding>
-            <element signature="e#0#72#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="266">
+          <caret line="671" column="55" selection-start-line="671" selection-start-column="55" selection-end-line="671" selection-end-column="55" />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/gensim/models/fasttext_inner.pyx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-6726" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/gensim/models/fasttext_inner.pxd">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2065" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/gensim/models/fasttext.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-8379" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/gensim/models/fasttext_corpusfile.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-14478" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TextProcess/extract_numpy_array.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="82">
+        <state relative-caret-position="38">
           <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
           <folding>
             <element signature="e#0#72#0" expanded="true" />
@@ -838,27 +772,91 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/news_seg_word_data">
+    <entry file="file://$PROJECT_DIR$/TextProcess/参考/extract_numpy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret column="144281" selection-start-column="144276" selection-end-column="144281" />
+        <state relative-caret-position="285">
+          <caret line="21" column="86" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="86" />
+          <folding>
+            <element signature="e#0#72#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/train_word2vector.py">
+    <entry file="file://$PROJECT_DIR$/TextProcess/helloword.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="101">
-          <caret line="80" column="30" lean-forward="true" selection-start-line="80" selection-start-column="30" selection-end-line="80" selection-end-column="30" />
+        <state relative-caret-position="171">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TextProcess/参考/BiLstm_Att.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TextProcess/readme.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="171">
+            <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TextProcess/train_w2v_simple.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
           <folding>
             <element signature="e#15#27#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TextProcess/wangdaqian.py">
+    <entry file="file://$PROJECT_DIR$/TextProcess/train_word2vector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="38" column="13" lean-forward="true" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+        <state relative-caret-position="285">
+          <caret line="108" column="58" selection-start-line="108" selection-start-column="47" selection-end-line="108" selection-end-column="58" />
+          <folding>
+            <element signature="e#15#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TextProcess/all_data_seg.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="15" column="32" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TextProcess/news_seg_word_data">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="2938" column="26" selection-start-line="2938" selection-start-column="26" selection-end-line="2938" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TextProcess/train_lstm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="828">
+          <caret line="431" column="36" selection-start-line="431" selection-start-column="36" selection-end-line="431" selection-end-column="36" />
+          <folding>
+            <element signature="e#15#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TextProcess/train_baseline_lstm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="260" column="9" lean-forward="true" selection-start-line="260" selection-start-column="9" selection-end-line="260" selection-end-column="9" />
           <folding>
             <element signature="e#15#27#0" expanded="true" />
           </folding>

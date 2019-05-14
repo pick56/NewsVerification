@@ -79,7 +79,8 @@ def word_vectorizer_process(data_set):
     with open('news_seg_word_data', 'w', encoding='utf-8') as f:
         for temp in data_set:
             for words in temp:
-                f.write(words+'\t')
+                f.write(words+' ')
+            f.write('\n')
 
     sentences = word2vec.Text8Corpus(u'news_seg_word_data')
     # print(data_set)

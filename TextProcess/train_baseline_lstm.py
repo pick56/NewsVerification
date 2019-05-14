@@ -251,22 +251,22 @@ if __name__ == '__main__':
     """
 
     import os.path
-    flag = os.path.isfile("train_X.npy") & os.path.isfile("train_y.npy") & os.path.isfile("val_X.npy") & os.path.isfile("val_y.npy")
+    flag = os.path.isfile("npy/train_X.npy") & os.path.isfile("npy/train_y.npy") & os.path.isfile("npy/val_X.npy") & os.path.isfile("npy/val_y.npy")
     if flag:
         print("从npy文件中加载数据")
-        train_X = numpy.load("train_X.npy")
-        train_y = numpy.load("train_y.npy")
-        val_X = numpy.load("val_X.npy")
-        val_y = numpy.load("val_y.npy")
+        train_X = numpy.load("npy/train_X.npy")
+        train_y = numpy.load("npy/train_y.npy")
+        val_X = numpy.load("npy/val_X.npy")
+        val_y = numpy.load("npy/val_y.npy")
     else:
         # 训练集合
         train_X, train_y = get_train_data("data_set/train_rumor.json", "data_set/train_truth.json")
         # 验证集
         val_X, val_y = get_train_data("data_set/test_rumor.json", "data_set/test_truth.json")
-        train_X_dir = "train_X.npy"
-        train_y_dir = "train_y.npy"
-        val_X_dir = "val_X.npy"
-        val_y_dir = "val_y.npy"
+        train_X_dir = "npy/train_X.npy"
+        train_y_dir = "npy/train_y.npy"
+        val_X_dir = "npy/val_X.npy"
+        val_y_dir = "npy/val_y.npy"
         numpy.save(train_X_dir, train_X)
         numpy.save(train_y_dir, train_y)
         numpy.save(val_X_dir, val_X)
