@@ -52,6 +52,8 @@ a_input = Input(input_shape, name='a_input')
 a_lstm = Bidirectional(LSTM(hidden_num, activation='relu', return_sequences=True), merge_mode = 'concat')(a_input)
 # shape(None,140,32)
 aatt1_out = AttentionLayer()(a_lstm)
+
+
 # shape1(None,140,1)
 aatt1_rep = Lambda(lambda x : K.repeat_elements(x, hidden_num * 2, axis=2))(aatt1_out)
 # shape1(None,140,32)

@@ -50,7 +50,8 @@ class AttentionLayer(Layer):
         u = self.attn_activation(K.dot(x,self.W_s) + self.B_s)
 
         #transform (None,length,w_dim)*(w_dim,) --> (None,length,)-->(None,length)
-        e = K.exp(K.sum(u*self.Attention_vec,axis=-1))
+        e = K.exp(K.sum(u*self.Attention_vec, axis=-1))
+
         #weight
         a = e / tf.expand_dims(K.sum(e,axis=1),-1)
         return tf.expand_dims(a,-1)

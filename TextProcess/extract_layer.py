@@ -12,16 +12,16 @@ if __name__ == '__main__':
     print(load_model.summary())
     model = Model(inputs=load_model.input, outputs=load_model.layers[3].output)
     print("从npy文件中加载数据")
-    train_X = numpy.load("train_X.npy")
-    train_y = numpy.load("train_y.npy")
-    val_X = numpy.load("val_X.npy")
-    val_y = numpy.load("val_y.npy")
+    train_X = numpy.load("npy/train_X.npy")
+    train_y = numpy.load("npy/train_y.npy")
+    val_X = numpy.load("npy/val_X.npy")
+    val_y = numpy.load("npy/val_y.npy")
     prediction = model.predict(train_X, verbose=0)  # 重新使用数据集
 
     print(len(prediction))
-    numpy.save("prediction_train.npy", prediction)
+    numpy.save("npy/prediction_train.npy", prediction)
 
     prediction = model.predict(val_X, verbose=0)  # 重新使用数据集
 
     print(len(prediction))
-    numpy.save("prediction_test.npy", prediction)
+    numpy.save("npy/prediction_test.npy", prediction)

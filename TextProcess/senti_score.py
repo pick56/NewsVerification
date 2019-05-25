@@ -138,10 +138,13 @@ def sentiment_score(senti_score_list):
     # StdNeg = np.std(score_array[:, 1])
     # StdNeg = float('%.1f' % StdNeg)
     # score.append([Pos, Neg])
-    score = Pos/(Pos + Neg)
-    result = round(score, 2)  # 保留了两位小数
-
-    return result
+    sum = Pos + Neg
+    if sum == 0:
+        return 0.5
+    else:
+        score = Pos/sum
+        result = round(score, 2)  # 保留了两位小数
+        return result
 
 
 if __name__ == '__main__':

@@ -25,13 +25,14 @@ if __name__ == '__main__':
     从data中提取数据
     
     """
-    num = 1100
+    num = 4188
     # 从最大的那个数据集中提取100条写文件
-    truth = read_file('raw_truth.json', num)
+    truth = read_file('train_truth.json', num)
     # save操作会自动覆盖之前的数据
     # filename:moderate_truth.json、moderate_rumor.json、small_truth.json、small_rumor.json
     # 可以在list上使用切片操作
-    save_file('moderate_truth.json', truth[100:1101])
+    save_file('train_truth1.json', truth)
+    xx = 1/0
 
     rumor = read_file('raw_rumor.json', num)
     # save操作会自动覆盖之前的数据

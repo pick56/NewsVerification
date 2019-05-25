@@ -4,7 +4,11 @@
 * 运行脚本train_word2vector
 * 脚本会使用smallrumor.json和smalltruth.json文件训练词向量模型
 * 中间文件news_seg_word_data为提取并且分词后的语料文件
-* 词向量模型会保存为news_dim32_ep30.model文件供后续使用
+* 词向量模型会保存为news_dim64_ep30.model文件供后续使用
+* senti_score文件为计算情感得分脚本
+* dic词典包含所有需要的词典
+* npy文件夹包含，训练中保存的部分numpy数组数据
+* extract_numpy_array脚本用来提取模型某一层输出
 ## 2，处理数据集
 ### 2.1，textfeature
 * 每个微博截取前100个词汇，（不足100补0）
@@ -22,3 +26,6 @@
 ## 1，采用预训练的resnet，不进行微调直接使用
 ## 2，同属一篇微博的图片进行了特征平均变成一个单一的向量
 ## 3，数据集只使用了同时具有图片和文本的数据
+
+<font color=red>我是红色</font>
+<font color=#008000>我是绿色</font>
