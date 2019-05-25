@@ -472,9 +472,7 @@ def model2(X, y):
 if __name__ == '__main__':
     """
     训练lstm
-    1，注意文件名,使用不同dataset时，需要更改filename的名字
-    2，数据集文件不可变
-    3，可以通过修改参数word_size提取每个微博词的个数
+    使用大语料训练的词向量，该脚本只为测试效果、速度
     """
 
     import os.path

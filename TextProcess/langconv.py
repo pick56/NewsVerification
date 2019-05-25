@@ -4,6 +4,10 @@
 from copy import deepcopy
 import re
 
+"""
+繁体到简体的转换
+"""
+
 try:
     import psyco
     psyco.full()

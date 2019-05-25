@@ -7,6 +7,9 @@ import numpy
 import json
 
 if __name__ == '__main__':
+    """
+    获取某一层的输出，并保存为numpy文件
+    """
     print("提取特征")
     load_model = load_model(r'news_model_text.model.h5')
     print(load_model.summary())
